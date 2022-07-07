@@ -20,22 +20,24 @@
 
 #define RIGHTMOTORTMRCTR_DEVICE_ID        XPAR_TMRCTR_0_DEVICE_ID
 #define LEFTMOTORTMRCTR_DEVICE_ID         XPAR_TMRCTR_1_DEVICE_ID
-#define PWM_PERIOD              10000000     /* PWM period in (10 ms) */
-#define TMRCTR_0                0            /* Timer 0 ID */
-#define TMRCTR_1                1            /* Timer 1 ID */
-#define CYCLE_PER_DUTYCYCLE     10           /* Clock cycles per duty cycle */
-#define MAX_DUTYCYCLE           100          /* Max duty cycle */
-#define DUTYCYCLE_DIVISOR       MAX_DUTYCYCLE/* Duty cycle Divisor */
+#define PWM_PERIOD              10000000     /* PWM period in ms (10 ms) */
 
-#define PERCENTAGE_INCREMENTS   10
 
-void initleds();
+int test_motor_pwm_hbridge();
 
-int mainTestPwm() {
+//int main() {
+//	init_platform();
+//	test_motor_pwm_hbridge();
+//	cleanup_platform();
+//	return 0;
+//}
+
+int test_motor_pwm_hbridge() {
 	HBridgeDriver hbridgeDriver;
 	PWMDriver pwmDriverRightMotor;
 	PWMDriver pwmDriverLeftMotor;
 	LedsDriver ledsDriver;
+
 
 	XTmrCtr timerPwmRightMotor;
 	XTmrCtr timerPwmLeftMotor;
@@ -44,7 +46,6 @@ int mainTestPwm() {
 
 	xil_printf("PWM TEST Started\n\r");
 
-	init_platform();
 
 	LEDS_DRIVER_init(&ledsDriver, &GpioLeds, LEDS_RGBLEDS_DEVICE_ID, LED_CHANNEL,
 			0b0000);
@@ -82,7 +83,6 @@ int mainTestPwm() {
 	PWM_DRIVER_disable(&pwmDriverLeftMotor);
 	xil_printf("PWM TEST finished\n\r");
 
-	cleanup_platform();
 	return 0;
 }
 

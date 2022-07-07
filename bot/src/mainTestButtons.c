@@ -33,12 +33,12 @@
 
 void test_leds_and_buttons();
 
-int main() {
-	init_platform();
-	test_leds_and_buttons();
-	cleanup_platform();
-	return 0;
-}
+//int main() {
+//	init_platform();
+//	test_leds_and_buttons();
+//	cleanup_platform();
+//	return 0;
+//}
 
 void test_leds_and_buttons() {
 	LedsDriver ledsDriver;
