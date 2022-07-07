@@ -22,6 +22,9 @@ void MOTOR_POSITION_init(MotorPosition* motorPosition, u32 baseAddr,
    motorPosition->clkFreqHz = clkFreqHz;
    motorPosition->edgesPerRev = edgesPerRev;
    motorPosition->gearboxRatio = gearboxRatio;
+
+   MOTOR_POSITION_clear_pos_counter(motorPosition);
+   MOTOR_POSITION_clear_speed_counters(motorPosition);
 }
 
 void MOTOR_POSITION_get_speeds(MotorPosition* motorPosition, int motor_speed[]) {
