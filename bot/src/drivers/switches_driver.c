@@ -15,30 +15,30 @@
 #include "switches_driver.h"
 
 void SWITCHES_DRIVER_init(SwitchesDriver* driver, XGpio* gpio, u16 deviceID,
-		unsigned channelID) {
+        unsigned channelID) {
 
-	XGpio_Config *cfg_ptr;
+    XGpio_Config *cfg_ptr;
 
-	// Initialize Button Device
-	cfg_ptr = XGpio_LookupConfig(deviceID);
-	XGpio_CfgInitialize(gpio, cfg_ptr, cfg_ptr->BaseAddress);
+    // Initialize Button Device
+    cfg_ptr = XGpio_LookupConfig(deviceID);
+    XGpio_CfgInitialize(gpio, cfg_ptr, cfg_ptr->BaseAddress);
 
-	// Set Button Tristate
-	XGpio_SetDataDirection(gpio, channelID, SWITCHES_MASK);
+    // Set Button Tristate
+    XGpio_SetDataDirection(gpio, channelID, SWITCHES_MASK);
 
-	driver->channelID = channelID;
-	driver->deviceID = deviceID;
-	driver->gpio = gpio;
-	driver->previousDelta = 0;
-	driver->rawState = 0;
-	driver->state = 0;
-	driver->switchClockA = 0;
-	driver->switchClockB = 0;
+    driver->channelID = channelID;
+    driver->deviceID = deviceID;
+    driver->gpio = gpio;
+    driver->previousDelta = 0;
+    driver->rawState = 0;
+    driver->state = 0;
+    driver->switchClockA = 0;
+    driver->switchClockB = 0;
 }
 
 
 u32 SWITCHES_DRIVER_get_state(SwitchesDriver* driver) {
-	return driver->state;
+    return driver->state;
 }
 
 /**
@@ -62,68 +62,68 @@ u32 SWITCHES_DRIVER_get_state(SwitchesDriver* driver) {
 
 u32 SWITCHES_DRIVER_poll(SwitchesDriver* driver) {
 
-	u32 delta;
-	u32 data;
+    u32 delta;
+    u32 data;
 
-	// Read the raw state of the push buttons.
-	data = XGpio_DiscreteRead(driver->gpio, driver->channelID);
+    // Read the raw state of the push buttons.
+    data = XGpio_DiscreteRead(driver->gpio, driver->channelID);
 
-	driver->rawState = (uint8_t) data;
-	//
-	// Determine the switches that are at a different state than the debounced
-	// state.
-	//
-	delta = data ^ driver->state;
+    driver->rawState = (uint8_t) data;
+    //
+    // Determine the switches that are at a different state than the debounced
+    // state.
+    //
+    delta = data ^ driver->state;
 
-	//
-	// Increment the clocks by one.
-	//
-	driver->switchClockA ^= driver->switchClockB;
-	driver->switchClockB = ~driver->switchClockB;
+    //
+    // Increment the clocks by one.
+    //
+    driver->switchClockA ^= driver->switchClockB;
+    driver->switchClockB = ~driver->switchClockB;
 
-	//
-	// Reset the clocks corresponding to switches that have not changed state.
-	//
-	driver->switchClockA &= delta;
-	driver->switchClockB &= delta;
+    //
+    // Reset the clocks corresponding to switches that have not changed state.
+    //
+    driver->switchClockA &= delta;
+    driver->switchClockB &= delta;
 
-	//
-	// Get the new debounced switch state.
-	//
-	driver->state &= driver->switchClockA | driver->switchClockB;
-	driver->state |= (~(driver->switchClockA | driver->switchClockB)) & data;
+    //
+    // Get the new debounced switch state.
+    //
+    driver->state &= driver->switchClockA | driver->switchClockB;
+    driver->state |= (~(driver->switchClockA | driver->switchClockB)) & data;
 
-	//
-	// Determine the switches that just changed debounced state.
-	//
-	delta ^= (driver->switchClockA | driver->switchClockB);
+    //
+    // Determine the switches that just changed debounced state.
+    //
+    delta ^= (driver->switchClockA | driver->switchClockB);
 
-	//
-	// Store the bit mask for the buttons that have changed for return to
-	// caller.
-	//
-	driver->previousDelta = delta;
+    //
+    // Store the bit mask for the buttons that have changed for return to
+    // caller.
+    //
+    driver->previousDelta = delta;
 
-	//
-	// Return the debounced buttons states to the caller.
-	// '1' indicates the button is pressed
-	//
-	return driver->state;
+    //
+    // Return the debounced buttons states to the caller.
+    // '1' indicates the button is pressed
+    //
+    return driver->state;
 }
 
 u32 SWITCHES_DRIVER_poll_switch1(SwitchesDriver* driver) {
-	return SWITCHES_DRIVER_poll(driver) & SWITCH1_MASK;
+    return SWITCHES_DRIVER_poll(driver) & SWITCH1_MASK;
 }
 
 u32 SWITCHES_DRIVER_poll_switch2(SwitchesDriver* driver) {
-	return SWITCHES_DRIVER_poll(driver) & SWITCH2_MASK;
+    return SWITCHES_DRIVER_poll(driver) & SWITCH2_MASK;
 }
 
 u32 SWITCHES_DRIVER_poll_switch3(SwitchesDriver* driver) {
-	return SWITCHES_DRIVER_poll(driver) & SWITCH3_MASK;
+    return SWITCHES_DRIVER_poll(driver) & SWITCH3_MASK;
 }
 
 u32 SWITCHES_DRIVER_poll_switch4(SwitchesDriver* driver) {
-	return SWITCHES_DRIVER_poll(driver) & SWITCH4_MASK;
+    return SWITCHES_DRIVER_poll(driver) & SWITCH4_MASK;
 }
 

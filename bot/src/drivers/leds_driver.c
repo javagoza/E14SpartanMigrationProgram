@@ -27,34 +27,34 @@
  *
  */
 void LEDS_DRIVER_init(LedsDriver* driver, XGpio* gpio,
-		u16 deviceID, unsigned channelID, u32 state) {
+        u16 deviceID, unsigned channelID, u32 state) {
 
-	driver->gpio = gpio;
-	driver->channelID = channelID;
-	driver->state = state;
+    driver->gpio = gpio;
+    driver->channelID = channelID;
+    driver->state = state;
 
-	XGpio_Config *cfg_ptr;
+    XGpio_Config *cfg_ptr;
 
-	// initialize leds device
-	cfg_ptr = XGpio_LookupConfig(deviceID);
-	XGpio_CfgInitialize(gpio, cfg_ptr, cfg_ptr->BaseAddress);
+    // initialize leds device
+    cfg_ptr = XGpio_LookupConfig(deviceID);
+    XGpio_CfgInitialize(gpio, cfg_ptr, cfg_ptr->BaseAddress);
 
-	// Set Led Tristate
-	XGpio_SetDataDirection(gpio, channelID, 0);
+    // Set Led Tristate
+    XGpio_SetDataDirection(gpio, channelID, 0);
 
-	LEDS_DRIVER_set_leds_state(driver, state);
+    LEDS_DRIVER_set_leds_state(driver, state);
 
 }
 
 
 u32 LEDS_DRIVER_get_leds_state(LedsDriver* driver) {
-	return driver->state;
+    return driver->state;
 }
 
 void LEDS_DRIVER_set_leds_state(LedsDriver* driver, u32 state) {
-	driver->state = state;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state = state;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 
 }
 
@@ -62,79 +62,79 @@ void LEDS_DRIVER_set_leds_state(LedsDriver* driver, u32 state) {
 ///////////// ON LEDS ////////////////////
 
 void LEDS_DRIVER_set_led1_on(LedsDriver* driver) {
-	driver->state |= LED1_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state |= LED1_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 void LEDS_DRIVER_set_led2_on(LedsDriver* driver) {
-	driver->state |= LED2_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state |= LED2_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 void LEDS_DRIVER_set_led3_on(LedsDriver* driver) {
-	driver->state |= LED3_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state |= LED3_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 void LEDS_DRIVER_set_led4_on(LedsDriver* driver) {
-	driver->state |= LED4_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state |= LED4_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 ///////////// OFF LEDS ////////////////////
 
 void LEDS_DRIVER_set_led1_off(LedsDriver* driver) {
-	driver->state &= ~ LED1_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state &= ~ LED1_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 void LEDS_DRIVER_set_led2_off(LedsDriver* driver) {
-	driver->state &= ~ LED2_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state &= ~ LED2_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 void LEDS_DRIVER_set_led3_off(LedsDriver* driver) {
-	driver->state &= ~ LED3_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state &= ~ LED3_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 void LEDS_DRIVER_set_led4_off(LedsDriver* driver) {
-	driver->state &= ~LED4_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state &= ~LED4_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 ///////////// TOGGLE LEDS ////////////////////
 
 void LEDS_DRIVER_set_led1_toggle(LedsDriver* driver) {
-	driver->state ^= LED1_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state ^= LED1_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 void LEDS_DRIVER_set_led2_toggle(LedsDriver* driver) {
-	driver->state  ^=  LED2_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state  ^=  LED2_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 void LEDS_DRIVER_set_led3_toggle(LedsDriver* driver) {
-	driver->state  ^= LED3_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state  ^= LED3_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 void LEDS_DRIVER_set_led4_toggle(LedsDriver* driver) {
-	driver->state ^= LED4_MASK;
-	XGpio_DiscreteWrite(driver->gpio,
-			driver->channelID, driver->state);
+    driver->state ^= LED4_MASK;
+    XGpio_DiscreteWrite(driver->gpio,
+            driver->channelID, driver->state);
 }
 
 

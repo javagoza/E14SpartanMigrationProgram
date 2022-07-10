@@ -19,10 +19,10 @@
 #include "xgpio.h"
 
 typedef struct LedsDriver {
-	XGpio* gpio;
-	u32 deviceID;
-	u32 channelID;
-	u32 state; // holds the current value of the led register
+    XGpio* gpio;
+    u32 deviceID;
+    u32 channelID;
+    u32 state; // holds the current value of the led register
 } LedsDriver;
 
 #define LED1_MASK 0b0001

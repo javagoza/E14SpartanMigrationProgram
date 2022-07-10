@@ -19,17 +19,17 @@
 #include "xgpio.h"
 
 typedef struct SwitchesDriver {
-	XGpio* gpio;
-	u32 deviceID;
-	u32 channelID;
-	u32 state; // Holds the current, debounced state of each button.  A 1 in a bit indicates
-			   // that that button is currently pressed, otherwise it is released.
-	u32 switchClockA;
-	u32 switchClockB;
-	u32 rawState;
-	u32 previousDelta;  // indicate* which button states changed since
-						// the last time poll function was called.
-						// This value is derived from the debounced state of the buttons.
+    XGpio* gpio;
+    u32 deviceID;
+    u32 channelID;
+    u32 state; // Holds the current, debounced state of each button.  A 1 in a bit indicates
+               // that that button is currently pressed, otherwise it is released.
+    u32 switchClockA;
+    u32 switchClockB;
+    u32 rawState;
+    u32 previousDelta;  // indicate* which button states changed since
+                        // the last time poll function was called.
+                        // This value is derived from the debounced state of the buttons.
 } SwitchesDriver;
 
 #define SWITCHES_MASK 0b1111
@@ -40,7 +40,7 @@ typedef struct SwitchesDriver {
 #define SWITCH4_MASK 0b1000
 
 void SWITCHES_DRIVER_init(SwitchesDriver* driver, XGpio* gpio, u16 deviceID,
-		unsigned channelID);
+        unsigned channelID);
 
 u32 SWITCHES_DRIVER_get_state(SwitchesDriver* driver);
 

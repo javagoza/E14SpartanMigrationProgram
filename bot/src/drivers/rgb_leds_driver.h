@@ -19,10 +19,10 @@
 #include "xgpio.h"
 
 typedef struct RgbLedsDriver {
-	XGpio* gpio;
-	u32 deviceID;
-	u32 channelID;
-	u32 state; // holds the current value of the rgb led register
+    XGpio* gpio;
+    u32 deviceID;
+    u32 channelID;
+    u32 state; // holds the current value of the rgb led register
 } RgbLedsDriver;
 
 #define RGBLED2_RED_MASK   0b100000
@@ -44,7 +44,7 @@ typedef struct RgbLedsDriver {
 
 
 void RGB_LEDS_DRIVER_init(RgbLedsDriver* driver, XGpio* gpio,
-		u16 deviceID, unsigned channelID, u32 state);
+        u16 deviceID, unsigned channelID, u32 state);
 
 void RGB_LEDS_DRIVER_set_rgb_leds_state(RgbLedsDriver* driver, u32 state);
 

@@ -30,6 +30,13 @@
 #define MOTOR_POSITION_POS_DIFF_OFFSET  MOTOR_POSITION_S00_AXI_SLV_REG3_OFFSET
 #define MOTOR_POSITION_CLK_OFFSET       MOTOR_POSITION_S00_AXI_SLV_REG4_OFFSET
 
+typedef enum Motors {
+    RIGHT_MOTOR=0, LEFT_MOTOR
+} Motors;
+
+typedef enum Counters {
+    POS_COUNTER=0, CLOCK_COUNTER
+} Counters;
 
 typedef struct MotorPosition {
    u32 baseAddr;
@@ -40,6 +47,7 @@ typedef struct MotorPosition {
 
 
 /**************************** Type Definitions *****************************/
+
 /**
  *
  * Write a value to a MOTOR_POSITION register. A 32 bit write is performed.
@@ -54,11 +62,11 @@ typedef struct MotorPosition {
  *
  * @note
  * C-style signature:
- * 	void MOTOR_POSITION_mWriteReg(u32 BaseAddress, unsigned RegOffset, u32 Data)
+ *     void MOTOR_POSITION_mWriteReg(u32 BaseAddress, unsigned RegOffset, u32 Data)
  *
  */
 #define MOTOR_POSITION_mWriteReg(BaseAddress, RegOffset, Data) \
-  	Xil_Out32((BaseAddress) + (RegOffset), (u32)(Data))
+      Xil_Out32((BaseAddress) + (RegOffset), (u32)(Data))
 
 /**
  *
@@ -74,7 +82,7 @@ typedef struct MotorPosition {
  *
  * @note
  * C-style signature:
- * 	u32 MOTOR_POSITION_mReadReg(u32 BaseAddress, unsigned RegOffset)
+ *     u32 MOTOR_POSITION_mReadReg(u32 BaseAddress, unsigned RegOffset)
  *
  */
 #define MOTOR_POSITION_mReadReg(BaseAddress, RegOffset) \

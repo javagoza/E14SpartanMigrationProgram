@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="artybot_obstacle_avoidance" location="C:/Xilinx/work/artys7/artybot/artybot_obstacle_avoidance" platform="C:/Xilinx/work/artys7/artybot/artybot_motor_feedback_wrapper/export/artybot_motor_feedback_wrapper/artybot_motor_feedback_wrapper.xpfm" platformUID="xilinx:arty-s7-50::0.0(custom)" systemProject="artybot_obstacle_avoidance_system" sysConfig="artybot_motor_feedback_wrapper" runtime="cpp" cpu="standalone_microblaze_0" cpuInstance="microblaze_0" os="standalone" mssSignature="3da20a9142a84f0ef77eb6569464f9d3">
+  <configuration name="Debug" id="xilinx.gnu.mb.exe.debug.1951088084">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.mb.exe.release.422041378" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="hello_world"/>
+</sdkproject:SdkProject>
