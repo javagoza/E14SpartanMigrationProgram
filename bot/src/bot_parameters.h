@@ -110,11 +110,11 @@
 #define BOT_OLED_INVERT                 (u8) 0x0 // true = white background/black letters false = black background /white letters
 
 // Proportional factor for the Rotational Motor Speed PID control
-#define BOT_SPEED_PID_K_PROPORTIONAL    0.008
+#define BOT_SPEED_PID_K_PROPORTIONAL    0.005
 // Integral factor for the Rotational Motor Speed PID control
-#define BOT_SPEED_PID_K_INTEGRAL        0.003
+#define BOT_SPEED_PID_K_INTEGRAL        0.0005
 // Derivative factor for the Rotational Motor Speed PID control
-#define BOT_SPEED_PID_K_DERIVATIVE      0.008
+#define BOT_SPEED_PID_K_DERIVATIVE      0.00005
 
 // Proportional factor for the Traveled Distance PID control
 #define BOT_DISTANCE_PID_K_PROPORTIONAL 0.015
@@ -127,7 +127,7 @@
 #define BOT_BASE_DUTY_CYCLE             0.4
 
 // Distance correction factor when rotating
-#define BOT_DISTANCE_ARC_CORRECTION     14.9
+#define BOT_DISTANCE_ARC_CORRECTION     15.2
 // Distance correction factors when driving straight
 #define BOT_DISTANCE_CORRECTION         15.5
 
