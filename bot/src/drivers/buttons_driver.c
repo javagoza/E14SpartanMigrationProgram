@@ -88,7 +88,7 @@ u32 BUTTONS_DRIVER_get_state(ButtonsDriver* driver) {
  * button ID's position indicates that the button is pressed and a 0
  * indicates that it is released.
  *
- * @param driver    A buttonss driver configuation
+ * @param driver    A buttons driver configuation
  * @return          The actual register buttons state
  */
 u32 BUTTONS_DRIVER_poll(ButtonsDriver* driver) {
@@ -147,11 +147,12 @@ u32 BUTTONS_DRIVER_poll(ButtonsDriver* driver) {
  * Returns 1 if the current debounced state of the button 1 BTN0
  * is pressed and a 0 indicates that it is released.
  *
- * @param driver    A buttonss driver configuation
+ * @param driver    A buttons driver configuation
  * @return 1        If the actual debounced state of the button is pressed
  */
 int BUTTONS_DRIVER_button1_pressed(ButtonsDriver* driver) {
-    return (BUTTONS_DRIVER_poll(driver) & BUTTON1_MASK) > 0;
+    BUTTONS_DRIVER_poll(driver);
+    return (driver->rawState & BUTTON1_MASK) > 0;
 }
 
 /**
@@ -159,11 +160,12 @@ int BUTTONS_DRIVER_button1_pressed(ButtonsDriver* driver) {
  * Returns 1 if the current debounced state of the button 2 BTN1
  * is pressed and a 0 indicates that it is released.
  *
- * @param driver    A buttonss driver configuation
+ * @param driver    A buttons driver configuation
  * @return 1        If the actual debounced state of the button is pressed
  */
 int BUTTONS_DRIVER_button2_pressed(ButtonsDriver* driver) {
-    return (BUTTONS_DRIVER_poll(driver) & BUTTON2_MASK) > 0;
+    BUTTONS_DRIVER_poll(driver);
+    return (driver->rawState & BUTTON2_MASK) > 0;
 }
 
 
@@ -172,11 +174,12 @@ int BUTTONS_DRIVER_button2_pressed(ButtonsDriver* driver) {
  * Returns 1 if the current debounced state of the button 3 BTN2
  * is pressed and a 0 indicates that it is released.
  *
- * @param driver    A buttonss driver configuation
+ * @param driver    A buttons driver configuation
  * @return 1        If the actual debounced state of the button is pressed
  */
 int BUTTONS_DRIVER_button3_pressed(ButtonsDriver* driver) {
-    return (BUTTONS_DRIVER_poll(driver) & BUTTON3_MASK) > 0;
+    BUTTONS_DRIVER_poll(driver);
+    return (driver->rawState & BUTTON3_MASK) > 0;
 }
 
 /**
@@ -184,18 +187,19 @@ int BUTTONS_DRIVER_button3_pressed(ButtonsDriver* driver) {
  * Returns 1 if the current debounced state of the button 3 BTN2
  * is pressed and a 0 indicates that it is released.
  *
- * @param driver    A buttonss driver configuation
+ * @param driver    A buttons driver configuation
  * @return 1        If the actual debounced state of the button is pressed
  */
 int BUTTONS_DRIVER_button4_pressed(ButtonsDriver* driver) {
-    return (BUTTONS_DRIVER_poll(driver) & BUTTON4_MASK) > 0;
+    BUTTONS_DRIVER_poll(driver);
+    return (driver->rawState & BUTTON4_MASK) > 0;
 }
 
 /**
  * BUTTONS_DRIVER_reset(ButtonsDriver* driver)
  * Reset the buttons driver
  *
- * @param driver    A buttonss driver configuation
+ * @param driver    A buttons driver configuation
  */
 void BUTTONS_DRIVER_reset(ButtonsDriver* driver) {
     driver->previousDelta = 0;

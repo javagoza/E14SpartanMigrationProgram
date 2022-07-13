@@ -112,18 +112,22 @@ u32 SWITCHES_DRIVER_poll(SwitchesDriver* driver) {
 }
 
 u32 SWITCHES_DRIVER_poll_switch1(SwitchesDriver* driver) {
-    return SWITCHES_DRIVER_poll(driver) & SWITCH1_MASK;
+    return SWITCHES_DRIVER_poll(driver);
+    return (driver->rawState & SWITCH1_MASK) > 0;
 }
 
 u32 SWITCHES_DRIVER_poll_switch2(SwitchesDriver* driver) {
-    return SWITCHES_DRIVER_poll(driver) & SWITCH2_MASK;
+    SWITCHES_DRIVER_poll(driver);
+    return (driver->rawState & SWITCH2_MASK) > 0;
 }
 
 u32 SWITCHES_DRIVER_poll_switch3(SwitchesDriver* driver) {
-    return SWITCHES_DRIVER_poll(driver) & SWITCH3_MASK;
+    SWITCHES_DRIVER_poll(driver);
+    return (driver->rawState & SWITCH3_MASK) > 0;
 }
 
 u32 SWITCHES_DRIVER_poll_switch4(SwitchesDriver* driver) {
-    return SWITCHES_DRIVER_poll(driver) & SWITCH4_MASK;
+    SWITCHES_DRIVER_poll(driver);
+    return (driver->rawState & SWITCH4_MASK) > 0;
 }
 

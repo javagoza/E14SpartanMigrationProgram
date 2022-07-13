@@ -23,17 +23,18 @@
 #include "sleep.h"
 
 #include "bot.h"
-#include "bot_parameters.h"
+#include "emubot_app.h"
 
 typedef enum Tests {
     TEST_LEDS = 0,
     TEST_LEDS_BUTTONS,
     TEST_MOTOR_POSITION_OLED,
     TEST_PWM_HBRIDGE,
-    TEST_BOT
+    TEST_BOT,
+    EMUBOT_APP
 } Tests;
 
-Tests testCase = TEST_BOT;
+Tests testCase = EMUBOT_APP;
 
 void test_leds();
 void test_leds_and_buttons();
@@ -51,6 +52,7 @@ void oled_show_home(PmodOLED* oled, char* text);
 void play_button_1_show(DrivingDriver* botDriver, PmodOLED* oled);
 void play_button_2_show(DrivingDriver* botDriver, PmodOLED* oled);
 void play_button_3_show(DrivingDriver* botDriver, PmodOLED* oled);
+
 
 int main() {
     init_platform();
@@ -71,6 +73,10 @@ int main() {
     case TEST_BOT:
         test_leds();
         test_bot();
+        break;
+    case EMUBOT_APP:
+        test_leds();
+        emu_bot_application();
         break;
     default:
         break;
@@ -101,7 +107,10 @@ void test_bot() {
             play_button_3_show(&botDrivers.drivingDriver, &botDrivers.oled);
             BUTTONS_DRIVER_reset(&botDrivers.buttonsDriver);
         }
-
+        if (BUTTONS_DRIVER_button4_pressed(&botDrivers.buttonsDriver)) {
+            emu_bot_application();
+            BUTTONS_DRIVER_reset(&botDrivers.buttonsDriver);
+        }
         usleep(5000);
     }
     DRIVING_DRIVER_end(&botDrivers.drivingDriver);
@@ -412,6 +421,7 @@ void test_motor_position_oled() {
 
     cleanup_platform();
 }
+
 
 void test_motor_pwm_hbridge() {
     HBridgeDriver hbridgeDriver;

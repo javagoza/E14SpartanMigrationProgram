@@ -105,7 +105,7 @@
 // OLED AXI LITE SPI Base Address
 #define BOT_OLED_SPI_BASEADDR            XPAR_PMODOLED_0_AXI_LITE_SPI_BASEADDR
 // OLED orientation
-#define BOT_OLED_ORIENTATION            (u8) 0x0 // Set up for Normal PmodOLED(false) vs normal Onboard OLED(true)
+#define BOT_OLED_ORIENTATION            (u8) 0x1 // Set up for Normal PmodOLED(false) vs normal Onboard OLED(true)
 // OLED white background or black background
 #define BOT_OLED_INVERT                 (u8) 0x0 // true = white background/black letters false = black background /white letters
 

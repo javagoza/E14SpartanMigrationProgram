@@ -26,3 +26,38 @@ void OLED_putIntVariable(PmodOLED *InstancePtr, int16_t value) {
     OLED_PutChar(InstancePtr,  (value / 10) % 10 + 48);
     OLED_PutChar(InstancePtr,  (value % 10) + 48);
 }
+
+
+/* ------------------------------------------------------------ */
+/***    OLED_RecedeCursor
+**
+**  Parameters:
+**      InstancePtr - pointer to SPI handler and OLED data
+**
+**  Return Value:
+**      none
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      Recedes the character cursor by one character location,
+**      wrapping at the beginning of line and forward to the bottom at the
+**      beginning of the display.
+*/
+
+void  OLED_RecedeCursor(PmodOLED *InstancePtr)
+{
+    OLED *OledPtr = &(InstancePtr->OLEDState);
+
+    OledPtr->xchOledCur -= 1;
+    if (OledPtr->xchOledCur < 0) {
+        OledPtr->xchOledCur =  OledPtr->xchOledMax;
+        OledPtr->ychOledCur -= 1;
+    }
+    if (OledPtr->ychOledCur < 0) {
+        OledPtr->ychOledCur = 0;
+    }
+
+    OLED_SetCursor(InstancePtr, OledPtr->xchOledCur, OledPtr->ychOledCur);
+}

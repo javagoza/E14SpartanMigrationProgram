@@ -33,8 +33,8 @@
 /*                                                                        */
 /************************************************************************/
 
-#ifndef __BOT_DRIVERS_H_
-#define __BOT_DRIVERS_H_
+#ifndef __BOT_H_
+#define __BOT_H_
 
 #include "bot_parameters.h"
 #include "drivers/leds_driver.h"
@@ -69,4 +69,4 @@ void BOT_init_driving_driver(DrivingDriver* drivingDriver);
 
 void BOT_init_oled_display(PmodOLED *oled);
 
-#endif // __BOT_DRIVERS_H_
+#endif // __BOT_H_
