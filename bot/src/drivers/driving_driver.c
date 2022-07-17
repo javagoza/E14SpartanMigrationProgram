@@ -704,13 +704,25 @@ void resetErrors(DrivingDriver* driver) {
 
 
 
-
+/**
+ * Drive motors given distance using light control (motors will have
+ *       turned about the same amount at the end)
+ * @param driver        Driving driver to use with its actual state
+ * @param distanceCm    Distance in cm to drive the Bot
+ * @param lightTarget   The target light value
+ */
 void DRIVING_DRIVER_drive_forward_continuous_light(DrivingDriver* driver,
         double distanceCm, u16 lightTarget) {
     DRIVING_DRIVER_set_direction_forward(driver);
     DRIVING_DRIVER_drive_light(driver, distanceCm, lightTarget);
 }
 
+/**
+ * Returns a value of the sensed light
+ *
+ * @param sample
+ * @return a value of the sensed light
+ */
 u16 DRIVING_DRIVER_light(COLOR_Data sample) {
     return sample.r;
 }
@@ -718,11 +730,12 @@ u16 DRIVING_DRIVER_light(COLOR_Data sample) {
 /**
  * void DRIVING_DRIVER_drive_cm(DrivingDriver* driver, double distance_cm)
  *
- * @details Drive motors given distance using positional control (motors will have
+ * @details Drive motors given distance using light control (motors will have
  *       turned about the same amount at the end)
  *
  * @param driver            Driving driver to use with its actual state
  * @param distance_cm       Distance in cm to drive the Bot
+ * @param lightTarget        The target light value
  */
 void DRIVING_DRIVER_drive_light(DrivingDriver* driver, double distance_cm,
         u16 lightTarget) {

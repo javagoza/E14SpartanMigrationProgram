@@ -1,7 +1,7 @@
 /************************************************************************/
 /*                                                                      */
-/* light_pid_control.c PID controller for controlling motor spedd       */
-/* with goal minizinz ligth difference from target                      */
+/* light_pid_control.c PID controller for controlling motor speed       */
+/* with goal minimizing ligth difference from target                    */
 /************************************************************************/
 /*  This file is part of the Arty S7 Bot Library                        */
 /*  Parts of this Library are based in Arvin Tang's ArtyBot Library     */
