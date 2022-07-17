@@ -81,26 +81,26 @@ void LIGHT_PID_CONTROLLER_set_duty_cycle(LightPIDController * controller,
 
 /**
  * void LIGHT_PID_CONTROLLER_get_new_outputs(
- *      LightPIDController * controller, int pos_diff, double dutyCyclePct[])
+ *      LightPIDController * controller, int light_diff, double dutyCyclePct[])
  *
  *  Uses a PID controller to compute new duty cycles for the right motor and the left motor
  *  with goal of minimizing light difference to 0 and store them in duty_cycle.
  *  Assumes that this function gets called at regular time intervals
  *
  * @param controller        Distance PID controller configuration and state
- * @param pos_diff
+ * @param light_diff
  * @param dutyCyclePct      returns base duty cycle values (from 0.0 to 1.0)
  *                          for right and left motors
  */
 void LIGHT_PID_CONTROLLER_get_new_outputs(
-        LightPIDController * controller, int pos_diff, double dutyCyclePct[]) {
+        LightPIDController * controller, int light_diff, double dutyCyclePct[]) {
 
-    controller->accumulated_error += pos_diff;
+    controller->accumulated_error += light_diff;
 
 
-    double correction = controller->KProportional * pos_diff
+    double correction = controller->KProportional * light_diff
             + controller->KIntegral * controller->accumulated_error
-            + controller->KDerivative * (pos_diff - controller->previous_error);
+            + controller->KDerivative * (light_diff - controller->previous_error);
 
 
     if (correction > 0.0) {
@@ -110,7 +110,7 @@ void LIGHT_PID_CONTROLLER_get_new_outputs(
         dutyCyclePct[0] = controller->baseDutyCyclePct;
         dutyCyclePct[1] = controller->baseDutyCyclePct - correction;
     }
-    controller->previous_error = pos_diff;
+    controller->previous_error = light_diff;
 
     // Bound duty cycles between 0 and 1
     if (dutyCyclePct[0] < 0.0) {
