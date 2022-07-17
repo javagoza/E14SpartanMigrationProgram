@@ -24,6 +24,7 @@
 
 #include "bot.h"
 #include "emubot_app.h"
+#include "line_follower_app.h"
 
 typedef enum Tests {
     TEST_LEDS = 0,
@@ -31,7 +32,8 @@ typedef enum Tests {
     TEST_MOTOR_POSITION_OLED,
     TEST_PWM_HBRIDGE,
     TEST_BOT,
-    EMUBOT_APP
+    EMUBOT_APP,
+    LINE_FOLLOWER
 } Tests;
 
 Tests testCase = EMUBOT_APP;
@@ -77,6 +79,10 @@ int main() {
     case EMUBOT_APP:
         test_leds();
         emu_bot_application();
+        break;
+    case LINE_FOLLOWER:
+        test_leds();
+        line_follower_application();
         break;
     default:
         break;

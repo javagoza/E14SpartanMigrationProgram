@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*  emubot.h    --    emubot application header file                    */
+/*  line_follower_application.h    --    line follower app header file  */
 /*  This file is part of the Arty S7 Bot Library                        */
 /*                                                                      */
 /************************************************************************/
@@ -20,8 +20,8 @@
 /************************************************************************/
 /*  Module Description:                                                 */
 /*                                                                      */
-/*    This header file contains definitions for emubot application.     */
-/*                                                                      */
+/*    This header file contains definitions for the line follower       */
+/*     application.                                                     */
 /************************************************************************/
 /*  Revision History:                                                   */
 /*                                                                      */
@@ -34,6 +34,6 @@
 
 #include "bot.h"
 
-void emu_bot_application();
+void line_follower_application();
 
 #endif // __EMUBOT_APP_H_

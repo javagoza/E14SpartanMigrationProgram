@@ -47,6 +47,8 @@
 #include "pwm_driver.h"
 #include "speed_pid_control.h"
 #include "hbridge_driver.h"
+#include "light_pid_control.h"
+#include "PmodCOLOR.h"
 
 typedef enum MoveDirection {
     IDLE, FORWARD, BACKWARD, TURN_LEFT, TURN_RIGHT
@@ -72,8 +74,11 @@ typedef struct DrivingDriver {
     DistancePIDController* distancePIDController;
     HBridgeDriver*         hbridge;
     SensorsConfiguration   sensorsConfiguration;
-    double                   distanceCmCorrection;
-    double                    distanceArcCmCorrection;
+    double                 distanceCmCorrection;
+    double                 distanceArcCmCorrection;
+    LightPIDController*    lightPIDController;
+    int16_t                previousLightDifference;
+    PmodCOLOR*             colorSensor;
 } DrivingDriver;
 
 /************ Function Prototypes ************/
@@ -110,5 +115,14 @@ void DRIVING_DRIVER_swing_turn_left_degrees(DrivingDriver* driver, int degrees);
 void DRIVING_DRIVER_swing_turn_right_degrees(DrivingDriver* driver, int degrees);
 
 void DRIVING_DRIVER_set_speed(DrivingDriver * driver, double baseDutyCyclePct);
+
+void DRIVING_DRIVER_delay_until_stop(DrivingDriver * driver);
+
+void DRIVING_DRIVER_set_light_pid_controller(DrivingDriver * driver, LightPIDController* lightPIDController, PmodCOLOR* colorSensor);
+
+void DRIVING_DRIVER_drive_forward_continuous_light(DrivingDriver* driver,
+        double distanceCm, u16 lightTarget);
+
+u16 DRIVING_DRIVER_light(COLOR_Data sample);
 
 #endif // BOT_DRIVER_H

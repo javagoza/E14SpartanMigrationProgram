@@ -45,9 +45,12 @@
 #include "drivers/switches_driver.h"
 #include "drivers/pwm_driver.h"
 #include "drivers/hbridge_driver.h"
+#include "drivers/light_pid_control.h"
 #include "drivers/motor_position.h"
 #include "drivers/speed_pid_control.h"
 #include "drivers/oled_extensions.h"
+#include "sleep.h"
+#include "stdlib.h"
 
 typedef struct BotDrivers {
     ButtonsDriver buttonsDriver;
@@ -56,6 +59,7 @@ typedef struct BotDrivers {
     RgbLedsDriver rgbLedsDriver;
     DrivingDriver drivingDriver;
     PmodOLED oled;
+    PmodCOLOR color;
 } BotDrivers;
 
 void BOT_init(BotDrivers* BotDrivers);
@@ -68,5 +72,7 @@ void BOT_init_gpio_outputs(RgbLedsDriver* rgbLedsDriver, LedsDriver* ledsDriver)
 void BOT_init_driving_driver(DrivingDriver* drivingDriver);
 
 void BOT_init_oled_display(PmodOLED *oled);
+
+void BOT_init_color_sensor(PmodCOLOR *colorSensor);
 
 #endif // __BOT_H_

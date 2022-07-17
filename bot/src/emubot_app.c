@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*  emubot.c    --    emubot application                                */
+/*  emubot_app.c    --    emubot application                                */
 /*  This file is part of the Arty S7 Bot Library                        */
 /*                                                                      */
 /************************************************************************/

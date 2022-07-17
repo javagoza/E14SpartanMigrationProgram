@@ -113,6 +113,10 @@ void enableMotors(DrivingDriver* driver);
 void disableMotors(DrivingDriver* driver);
 void resetErrors(DrivingDriver* driver);
 
+void DRIVING_DRIVER_drive_light(DrivingDriver* driver, double distance_cm,
+        u16 lightTarget);
+
+
 /**
  * void DRIVING_DRIVER_init(DrivingDriver* driver, MotorPosition* motorPosition,
  *         PWMDriver* pwmRightMotor, PWMDriver* pwmLeftMotor, u32 pwmPeriod_ns,
@@ -176,6 +180,11 @@ void DRIVING_DRIVER_init(DrivingDriver* driver, MotorPosition* motorPosition,
 
     driver->previousPositionDifference = MOTOR_POSITION_get_position_difference(
             driver->motorPosition);
+}
+
+void DRIVING_DRIVER_set_light_pid_controller(DrivingDriver* driver, LightPIDController* lightPIDController, PmodCOLOR* colorSensor){
+    driver->lightPIDController = lightPIDController;
+    driver->colorSensor = colorSensor;
 }
 
 /**
@@ -692,3 +701,74 @@ void resetErrors(DrivingDriver* driver) {
     SPEED_PID_CONTROLLER_reset_errors(driver->speedPIDController);
     DISTANCE_PID_CONTROLLER_reset_errors(driver->distancePIDController);
 }
+
+
+
+
+void DRIVING_DRIVER_drive_forward_continuous_light(DrivingDriver* driver,
+        double distanceCm, u16 lightTarget) {
+    DRIVING_DRIVER_set_direction_forward(driver);
+    DRIVING_DRIVER_drive_light(driver, distanceCm, lightTarget);
+}
+
+u16 DRIVING_DRIVER_light(COLOR_Data sample) {
+    return sample.r;
+}
+
+/**
+ * void DRIVING_DRIVER_drive_cm(DrivingDriver* driver, double distance_cm)
+ *
+ * @details Drive motors given distance using positional control (motors will have
+ *       turned about the same amount at the end)
+ *
+ * @param driver            Driving driver to use with its actual state
+ * @param distance_cm       Distance in cm to drive the Bot
+ */
+void DRIVING_DRIVER_drive_light(DrivingDriver* driver, double distance_cm,
+        u16 lightTarget) {
+
+    int16_t dist_converted = (int16_t) (distance_cm
+            * driver->distanceCmCorrection); // TODO cm to sensed edges
+
+    int16_t light_diff = DRIVING_DRIVER_light(COLOR_GetData(driver->colorSensor)) - lightTarget;
+    double duty_cycle[2];
+
+    LIGHT_PID_CONTROLLER_get_new_outputs(driver->lightPIDController, light_diff,
+            duty_cycle);
+
+    int16_t dist_traveled = MOTOR_POSITION_get_distance_traveled(
+            driver->motorPosition);
+
+    disableMotors(driver);
+
+    PWM_DRIVER_set_duty_pct(driver->pwmRightMotor, duty_cycle[RIGHT_MOTOR]);
+    PWM_DRIVER_set_duty_pct(driver->pwmLeftMotor, duty_cycle[LEFT_MOTOR]);
+
+    enableMotors(driver);
+
+    while (dist_traveled < dist_converted) {
+        usleep(SAMPLE_PER);
+
+        light_diff = DRIVING_DRIVER_light(COLOR_GetData(driver->colorSensor)) - lightTarget;
+
+        LIGHT_PID_CONTROLLER_get_new_outputs(driver->lightPIDController, light_diff,
+                duty_cycle);
+
+        disableMotors(driver);
+
+        PWM_DRIVER_set_duty_pct(driver->pwmRightMotor, duty_cycle[RIGHT_MOTOR]);
+        PWM_DRIVER_set_duty_pct(driver->pwmLeftMotor, duty_cycle[LEFT_MOTOR]);
+
+        enableMotors(driver);
+
+        dist_traveled = MOTOR_POSITION_get_distance_traveled(
+                driver->motorPosition);
+
+    }
+
+    driver->previousLightDifference = light_diff;
+
+    disableMotors(driver);
+
+}
+

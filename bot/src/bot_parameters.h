@@ -131,4 +131,14 @@
 // Distance correction factors when driving straight
 #define BOT_DISTANCE_CORRECTION         15.5
 
+// Proportional factor for the Lux Line difference e PID control
+#define BOT_LIGHT_PID_K_PROPORTIONAL 0.00002
+// Integral factor for the Lux Line difference  PID control
+#define BOT_LIGHT_PID_K_INTEGRAL     0.0
+// Derivative factor for the Lux Line difference  PID control
+#define BOT_LIGHT_PID_K_DERIVATIVE   0.0
+
+#define BOT_PMODCOLOR_0_AXI_LITE_IIC_BASEADDR XPAR_PMODCOLOR_0_AXI_LITE_IIC_BASEADDR
+#define BOT_PMODCOLOR_0_AXI_LITE_GPIO_BASEADDR XPAR_PMODCOLOR_0_AXI_LITE_GPIO_BASEADDR
+
 #endif // __BOT_PARAMETERS_H_

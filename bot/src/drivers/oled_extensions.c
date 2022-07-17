@@ -1,5 +1,6 @@
 
 #include "oled_extensions.h"
+#include "stdlib.h"
 
 /*
  * Displays on the OLED a float variable with a header and a tail
@@ -18,13 +19,15 @@ void OLED_putFloatVariable(PmodOLED *InstancePtr, int xch, int ych, char * head,
     OLED_PutString(InstancePtr, tail);
 }
 
-void OLED_putIntVariable(PmodOLED *InstancePtr, int16_t value) {
-
-    OLED_PutChar(InstancePtr,  (value / 10000) % 10 + 48);
-    OLED_PutChar(InstancePtr,  (value / 1000) % 10 + 48);
-    OLED_PutChar(InstancePtr,  (value / 100) % 10 + 48);
-    OLED_PutChar(InstancePtr,  (value / 10) % 10 + 48);
-    OLED_PutChar(InstancePtr,  (value % 10) + 48);
+void OLED_putIntVariable(PmodOLED *InstancePtr, int32_t value) {
+    if (value<0) {
+        OLED_PutChar(InstancePtr,  '-');
+    }
+    OLED_PutChar(InstancePtr,  (abs(value) / 10000) % 10 + 48);
+    OLED_PutChar(InstancePtr,  (abs(value) / 1000) % 10 + 48);
+    OLED_PutChar(InstancePtr,  (abs(value) / 100) % 10 + 48);
+    OLED_PutChar(InstancePtr,  (abs(value) / 10) % 10 + 48);
+    OLED_PutChar(InstancePtr,  (abs(value) % 10) + 48);
 }
 
 

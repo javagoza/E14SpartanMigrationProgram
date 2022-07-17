@@ -37,11 +37,13 @@
 /************************************************************************/
 #include "bot.h"
 
+
 static MotorPosition motorPosition;
 static PWMDriver pwmRightMotor;
 static PWMDriver pwmLeftMotor;
 static SpeedPIDController speedPIDController;
 static DistancePIDController distancePIDController;
+static LightPIDController lightPIDController;
 static HBridgeDriver hbridge;
 static XTmrCtr timerPwmRightMotor;
 static XTmrCtr timerPwmLeftMotor;
@@ -58,6 +60,7 @@ void BOT_init(BotDrivers* drivers) {
     BOT_init_gpio_outputs(&(drivers->rgbLedsDriver), &(drivers->ledsDriver));
     BOT_init_oled_display(&(drivers->oled));
     BOT_init_driving_driver(&(drivers->drivingDriver));
+    BOT_init_color_sensor(&(drivers->color));
 }
 
 /**
@@ -96,6 +99,23 @@ void BOT_init_oled_display(PmodOLED* oled) {
 }
 
 /**
+ * Initialize Pmod Color sensor
+ * @param colorSensor referce to Pmod Color sensor
+ */
+void BOT_init_color_sensor(PmodCOLOR *colorSensor)
+{
+    COLOR_Begin(colorSensor,
+            BOT_PMODCOLOR_0_AXI_LITE_IIC_BASEADDR,
+            BOT_PMODCOLOR_0_AXI_LITE_GPIO_BASEADDR, 0x29);
+
+    COLOR_SetENABLE(colorSensor,
+            COLOR_REG_ENABLE_PON_MASK);
+    usleep(2400);
+    COLOR_SetENABLE(colorSensor,
+    COLOR_REG_ENABLE_PON_MASK | COLOR_REG_ENABLE_RGBC_INIT_MASK);
+}
+
+/**
  * Initialize the Bot Driving Drive
  * @param botDriver    reference to Bot Driving Driver
  */
@@ -120,9 +140,14 @@ void BOT_init_driving_driver(DrivingDriver* botDriver) {
     BOT_DISTANCE_PID_K_PROPORTIONAL, BOT_DISTANCE_PID_K_INTEGRAL,
     BOT_DISTANCE_PID_K_DERIVATIVE, BOT_BASE_DUTY_CYCLE);
 
+    LIGHT_PID_CONTROLLER_init(&lightPIDController, BOT_LIGHT_PID_K_PROPORTIONAL,
+    BOT_LIGHT_PID_K_INTEGRAL,
+    BOT_LIGHT_PID_K_DERIVATIVE, BOT_BASE_DUTY_CYCLE);
+
     DRIVING_DRIVER_init(&*botDriver, &motorPosition, &pwmRightMotor,
             &pwmLeftMotor,
             BOT_PWM_PERIOD, &speedPIDController, &distancePIDController,
             &hbridge, FRONT_SENSORS, BOT_DISTANCE_CORRECTION,
             BOT_DISTANCE_ARC_CORRECTION, BOT_BASE_DUTY_CYCLE);
+
 }
