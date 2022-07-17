@@ -1,7 +1,7 @@
 /************************************************************************/
 /*                                                                      */
-/* distance_pid_control.c PID controller for controlling distance       */
-/* traveled by the two bot wheels                                       */
+/* light_pid_control.c PID controller for controlling motor spedd       */
+/* with goal minizinz ligth difference from target                      */
 /************************************************************************/
 /*  This file is part of the Arty S7 Bot Library                        */
 /*  Parts of this Library are based in Arvin Tang's ArtyBot Library     */
@@ -24,15 +24,15 @@
 /************************************************************************/
 /*  Module Description:                                                 */
 /*  This module implements a PID controller to compute new duty cycles  */
-/*  for the right and left motors with goal of minimizing the traveled  */
-/*  distance by means of minimizing the position difference to 0        */
+/*  for the right and left motors with goal of minimizing the light     */
+/*  difference from target to 0                                         */
 /*  Assumes that this function gets called at regular time intervals    */
 /*                                                                      */
 /*                                                                      */
 /************************************************************************/
 /*  Revision History:                                                   */
 /*                                                                      */
-/*     2022/07/03: (EAC) created                                         */
+/*     2022/07/16: (EAC) created                                         */
 /*                                                                      */
 /************************************************************************/
 
@@ -44,9 +44,8 @@
  *         double baseDutyCyclePct)
  *
  * Uses a PID controller to compute new duty cycles for motor1 and motor2
- * with goal of maintaining motor speeds at speed target and store them in
- * dutyCyclePct. Assumes that this function gets called at regular time
- * intervals.
+ * with goal of minimizing light difference from target. Assumes that this
+ * function gets called at regular time intervals.
  *
  * @param controller            Distance PID controller configuration and state
  * @param KProportional         PID proportional term
@@ -73,6 +72,7 @@ void LIGHT_PID_CONTROLLER_init(LightPIDController * controller,
  *
  * @param controller        Distance PID controller configuration and state
  * @param baseDutyCyclePct  Base duty cycle percentage 0.4 typical 0.75 for fast speed
+ *                          If using PMODColor do not exceed .2 for fast
  */
 void LIGHT_PID_CONTROLLER_set_duty_cycle(LightPIDController * controller,
         double baseDutyCyclePct) {
@@ -84,7 +84,7 @@ void LIGHT_PID_CONTROLLER_set_duty_cycle(LightPIDController * controller,
  *      LightPIDController * controller, int pos_diff, double dutyCyclePct[])
  *
  *  Uses a PID controller to compute new duty cycles for the right motor and the left motor
- *  with goal of minimizing position difference to 0 and store them in duty_cycle.
+ *  with goal of minimizing light difference to 0 and store them in duty_cycle.
  *  Assumes that this function gets called at regular time intervals
  *
  * @param controller        Distance PID controller configuration and state
@@ -104,11 +104,11 @@ void LIGHT_PID_CONTROLLER_get_new_outputs(
 
 
     if (correction > 0.0) {
-        dutyCyclePct[0] = controller->baseDutyCyclePct + 0.05; //
+        dutyCyclePct[0] = controller->baseDutyCyclePct + correction; //
         dutyCyclePct[1] = controller->baseDutyCyclePct ;
     } else  {
         dutyCyclePct[0] = controller->baseDutyCyclePct;
-        dutyCyclePct[1] = controller->baseDutyCyclePct - (-.05);
+        dutyCyclePct[1] = controller->baseDutyCyclePct - correction;
     }
     controller->previous_error = pos_diff;
 

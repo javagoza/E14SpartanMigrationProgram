@@ -36,7 +36,7 @@ typedef enum Tests {
     LINE_FOLLOWER
 } Tests;
 
-Tests testCase = EMUBOT_APP;
+Tests testCase = LINE_FOLLOWER;
 
 void test_leds();
 void test_leds_and_buttons();
