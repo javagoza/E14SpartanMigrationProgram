@@ -146,7 +146,7 @@ void DRIVING_DRIVER_init(DrivingDriver* driver, MotorPosition* motorPosition,
         SpeedPIDController* speedPIDController,
         DistancePIDController* distancePIDController, HBridgeDriver* hbridge,
         SensorsConfiguration sensorsConfiguration, double distanceCmCorrection,
-        double distanceArcCmCorrection, double baseDutyCycle) {
+        double distanceArcCmCorrection, double baseDutyCycle, PmodCOLOR* colorSensor) {
 
     driver->motorPosition = motorPosition;
     driver->pwmLeftMotor = pwmLeftMotor;
@@ -160,6 +160,7 @@ void DRIVING_DRIVER_init(DrivingDriver* driver, MotorPosition* motorPosition,
     driver->sensorsConfiguration = sensorsConfiguration;
     driver->distanceCmCorrection = distanceCmCorrection;
     driver->distanceArcCmCorrection = distanceArcCmCorrection;
+    driver->colorSensor = colorSensor;
 
     if (driver->sensorsConfiguration == FRONT_SENSORS) {
         HBRIDGE_DRIVER_set_direction(driver->hbridge, DIRECT_DIRECTION);
@@ -182,9 +183,8 @@ void DRIVING_DRIVER_init(DrivingDriver* driver, MotorPosition* motorPosition,
             driver->motorPosition);
 }
 
-void DRIVING_DRIVER_set_light_pid_controller(DrivingDriver* driver, LightPIDController* lightPIDController, PmodCOLOR* colorSensor){
+void DRIVING_DRIVER_set_light_pid_controller(DrivingDriver* driver, LightPIDController* lightPIDController){
     driver->lightPIDController = lightPIDController;
-    driver->colorSensor = colorSensor;
 }
 
 /**

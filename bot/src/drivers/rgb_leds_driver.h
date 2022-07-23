@@ -25,17 +25,17 @@ typedef struct RgbLedsDriver {
     u32 state; // holds the current value of the rgb led register
 } RgbLedsDriver;
 
-#define RGBLED2_RED_MASK   0b100000
+#define RGBLED2_RED_MASK   0b001000
 #define RGBLED2_GREEN_MASK 0b010000
-#define RGBLED2_BLUE_MASK  0b001000
+#define RGBLED2_BLUE_MASK  0b100000
 
-#define RGBLED1_RED_MASK   0b000100
+#define RGBLED1_RED_MASK   0b000001
 #define RGBLED1_GREEN_MASK 0b000010
-#define RGBLED1_BLUE_MASK  0b000001
+#define RGBLED1_BLUE_MASK  0b000100
 
-#define COLOR_RED       0b100
+#define COLOR_RED       0b001
 #define COLOR_GREEN     0b010
-#define COLOR_BLUE      0b001
+#define COLOR_BLUE      0b100
 #define COLOR_YELLOW    0b110
 #define COLOR_CYAN      0b011
 #define COLOR_MAGENTA   0b101

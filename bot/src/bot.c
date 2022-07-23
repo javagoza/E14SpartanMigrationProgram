@@ -113,6 +113,7 @@ void BOT_init_color_sensor(PmodCOLOR *colorSensor)
     usleep(2400);
     COLOR_SetENABLE(colorSensor,
     COLOR_REG_ENABLE_PON_MASK | COLOR_REG_ENABLE_RGBC_INIT_MASK);
+    usleep(2400);
 }
 
 /**
@@ -144,10 +145,11 @@ void BOT_init_driving_driver(DrivingDriver* botDriver) {
     BOT_LIGHT_PID_K_INTEGRAL,
     BOT_LIGHT_PID_K_DERIVATIVE, BOT_BASE_DUTY_CYCLE);
 
-    DRIVING_DRIVER_init(&*botDriver, &motorPosition, &pwmRightMotor,
+
+    DRIVING_DRIVER_init(botDriver, &motorPosition, &pwmRightMotor,
             &pwmLeftMotor,
             BOT_PWM_PERIOD, &speedPIDController, &distancePIDController,
             &hbridge, FRONT_SENSORS, BOT_DISTANCE_CORRECTION,
-            BOT_DISTANCE_ARC_CORRECTION, BOT_BASE_DUTY_CYCLE);
+            BOT_DISTANCE_ARC_CORRECTION, BOT_BASE_DUTY_CYCLE, botDriver->colorSensor);
 
 }

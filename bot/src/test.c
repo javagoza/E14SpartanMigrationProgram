@@ -25,6 +25,8 @@
 #include "bot.h"
 #include "emubot_app.h"
 #include "line_follower_app.h"
+#include "emubot_find_path_app.h"
+#include "xil_cache.h"
 
 typedef enum Tests {
     TEST_LEDS = 0,
@@ -33,10 +35,11 @@ typedef enum Tests {
     TEST_PWM_HBRIDGE,
     TEST_BOT,
     EMUBOT_APP,
-    LINE_FOLLOWER
+    LINE_FOLLOWER,
+    EMUBOT_FIND_PATH
 } Tests;
 
-Tests testCase = LINE_FOLLOWER;
+Tests testCase = EMUBOT_FIND_PATH;
 
 void test_leds();
 void test_leds_and_buttons();
@@ -44,6 +47,8 @@ void test_motor_position_oled();
 void test_motor_pwm_hbridge();
 void test_motor_pwm_hbridge();
 void test_bot();
+void EnableCaches();
+void DisableCaches();
 
 void oled_display_motor_position(PmodOLED* myOled, int speeds[2],
         int16_t positions[2]);
@@ -58,6 +63,7 @@ void play_button_3_show(DrivingDriver* botDriver, PmodOLED* oled);
 
 int main() {
     init_platform();
+    EnableCaches();
 
     switch (testCase) {
     case TEST_LEDS:
@@ -84,11 +90,16 @@ int main() {
         test_leds();
         line_follower_application();
         break;
+    case EMUBOT_FIND_PATH:
+        test_leds();
+        emu_bot_find_path_application();
+        break;
     default:
         break;
     }
-
+    DisableCaches();
     cleanup_platform();
+
     return 0;
 }
 
@@ -478,4 +489,27 @@ void test_motor_pwm_hbridge() {
     PWM_DRIVER_disable(&pwmDriverLeftMotor);
     xil_printf("PWM TEST finished\n\r");
 
+}
+
+
+void EnableCaches() {
+#ifdef __MICROBLAZE__
+#ifdef XPAR_MICROBLAZE_USE_ICACHE
+   Xil_ICacheEnable();
+#endif
+#ifdef XPAR_MICROBLAZE_USE_DCACHE
+   Xil_DCacheEnable();
+#endif
+#endif
+}
+
+void DisableCaches() {
+#ifdef __MICROBLAZE__
+#ifdef XPAR_MICROBLAZE_USE_DCACHE
+   Xil_DCacheDisable();
+#endif
+#ifdef XPAR_MICROBLAZE_USE_ICACHE
+   Xil_ICacheDisable();
+#endif
+#endif
 }

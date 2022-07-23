@@ -90,7 +90,7 @@ void DRIVING_DRIVER_init(DrivingDriver* driver, MotorPosition* motorPosition,
         SpeedPIDController* speedPIDController,
         DistancePIDController* distancePIDController, HBridgeDriver* hbridge,
         SensorsConfiguration sensorsConfiguration, double distanceCmCorrection,
-        double distanceArcCmCorrection, double baseDutyCycle);
+        double distanceArcCmCorrection, double baseDutyCycle, PmodCOLOR* colorSensor);
 
 void DRIVING_DRIVER_end(DrivingDriver* driver);
 
@@ -118,7 +118,7 @@ void DRIVING_DRIVER_set_speed(DrivingDriver * driver, double baseDutyCyclePct);
 
 void DRIVING_DRIVER_delay_until_stop(DrivingDriver * driver);
 
-void DRIVING_DRIVER_set_light_pid_controller(DrivingDriver * driver, LightPIDController* lightPIDController, PmodCOLOR* colorSensor);
+void DRIVING_DRIVER_set_light_pid_controller(DrivingDriver * driver, LightPIDController* lightPIDController);
 
 void DRIVING_DRIVER_drive_forward_continuous_light(DrivingDriver* driver,
         double distanceCm, u16 lightTarget);

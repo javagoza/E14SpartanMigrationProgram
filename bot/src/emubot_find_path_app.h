@@ -1,7 +1,8 @@
 /************************************************************************/
 /*                                                                      */
-/*  line_follower_application.h    --    line follower app header file  */
-/*  This file is part of the Arty S7 Bot Library                        */
+/* emu_bot_find_path_application.h    -- Emubot find path application   */
+/*  header file                                                         */
+/* This file is part of the Arty S7 Bot Library                         */
 /*                                                                      */
 /************************************************************************/
 /*    Author:     Enrique Albertos                                      */
@@ -20,20 +21,21 @@
 /************************************************************************/
 /*  Module Description:                                                 */
 /*                                                                      */
-/*    This header file contains definitions for the line follower       */
-/*     application.                                                     */
+/*    This header file contains definitions for emubot find path        */
+/*    application.                                                      */
+/*                                                                      */
 /************************************************************************/
 /*  Revision History:                                                   */
 /*                                                                      */
-/*    2022/07/10: (EAC) created                                         */
+/*    2022/07/23: (EAC) created                                         */
 /*                                                                      */
 /************************************************************************/
 
-#ifndef __LINE_FOLLOWER_APP_H_
-#define __LINE_FOLLOWER_APP_H_
+#ifndef __EMUBOT_FIND_PATH_APP_H_
+#define __EMUBOT_FIND_PATH_APP_H_
 
 #include "bot.h"
 
-void line_follower_application();
+void emu_bot_find_path_application();
 
-#endif // __LINE_FOLLOWER_APP_H_
+#endif // __EMUBOT_FIND_PATH_APP_H_
