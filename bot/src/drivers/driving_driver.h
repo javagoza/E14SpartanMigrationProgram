@@ -50,6 +50,8 @@
 #include "light_pid_control.h"
 #include "PmodCOLOR.h"
 
+#include "../PmodToF/PmodToF.h"
+
 typedef enum MoveDirection {
     IDLE, FORWARD, BACKWARD, TURN_LEFT, TURN_RIGHT
 } MoveDirection;
@@ -124,5 +126,7 @@ void DRIVING_DRIVER_drive_forward_continuous_light(DrivingDriver* driver,
         double distanceCm, u16 lightTarget);
 
 u16 DRIVING_DRIVER_light(COLOR_Data sample);
+
+int DRIVING_DRIVER_drive_to_obstacle(DrivingDriver* driver, double distance_cm, double obstacle_distance_cm);
 
 #endif // BOT_DRIVER_H

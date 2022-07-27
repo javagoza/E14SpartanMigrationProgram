@@ -124,7 +124,7 @@
 #define BOT_DISTANCE_PID_K_DERIVATIVE   0.001
 
 // Base duty cycle, base speed for the PID controllers
-#define BOT_BASE_DUTY_CYCLE             0.4
+#define BOT_BASE_DUTY_CYCLE             0.6
 
 // Distance correction factor when rotating
 #define BOT_DISTANCE_ARC_CORRECTION     15.2

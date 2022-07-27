@@ -116,7 +116,6 @@ void resetErrors(DrivingDriver* driver);
 void DRIVING_DRIVER_drive_light(DrivingDriver* driver, double distance_cm,
         u16 lightTarget);
 
-
 /**
  * void DRIVING_DRIVER_init(DrivingDriver* driver, MotorPosition* motorPosition,
  *         PWMDriver* pwmRightMotor, PWMDriver* pwmLeftMotor, u32 pwmPeriod_ns,
@@ -146,7 +145,8 @@ void DRIVING_DRIVER_init(DrivingDriver* driver, MotorPosition* motorPosition,
         SpeedPIDController* speedPIDController,
         DistancePIDController* distancePIDController, HBridgeDriver* hbridge,
         SensorsConfiguration sensorsConfiguration, double distanceCmCorrection,
-        double distanceArcCmCorrection, double baseDutyCycle, PmodCOLOR* colorSensor) {
+        double distanceArcCmCorrection, double baseDutyCycle,
+        PmodCOLOR* colorSensor) {
 
     driver->motorPosition = motorPosition;
     driver->pwmLeftMotor = pwmLeftMotor;
@@ -183,7 +183,8 @@ void DRIVING_DRIVER_init(DrivingDriver* driver, MotorPosition* motorPosition,
             driver->motorPosition);
 }
 
-void DRIVING_DRIVER_set_light_pid_controller(DrivingDriver* driver, LightPIDController* lightPIDController){
+void DRIVING_DRIVER_set_light_pid_controller(DrivingDriver* driver,
+        LightPIDController* lightPIDController) {
     driver->lightPIDController = lightPIDController;
 }
 
@@ -702,8 +703,6 @@ void resetErrors(DrivingDriver* driver) {
     DISTANCE_PID_CONTROLLER_reset_errors(driver->distancePIDController);
 }
 
-
-
 /**
  * Drive motors given distance using light control (motors will have
  *       turned about the same amount at the end)
@@ -743,7 +742,8 @@ void DRIVING_DRIVER_drive_light(DrivingDriver* driver, double distance_cm,
     int16_t dist_converted = (int16_t) (distance_cm
             * driver->distanceCmCorrection); // TODO cm to sensed edges
 
-    int16_t light_diff = DRIVING_DRIVER_light(COLOR_GetData(driver->colorSensor)) - lightTarget;
+    int16_t light_diff = DRIVING_DRIVER_light(
+            COLOR_GetData(driver->colorSensor)) - lightTarget;
     double duty_cycle[2];
 
     LIGHT_PID_CONTROLLER_get_new_outputs(driver->lightPIDController, light_diff,
@@ -762,10 +762,11 @@ void DRIVING_DRIVER_drive_light(DrivingDriver* driver, double distance_cm,
     while (dist_traveled < dist_converted) {
         usleep(SAMPLE_PER);
 
-        light_diff = DRIVING_DRIVER_light(COLOR_GetData(driver->colorSensor)) - lightTarget;
+        light_diff = DRIVING_DRIVER_light(COLOR_GetData(driver->colorSensor))
+                - lightTarget;
 
-        LIGHT_PID_CONTROLLER_get_new_outputs(driver->lightPIDController, light_diff,
-                duty_cycle);
+        LIGHT_PID_CONTROLLER_get_new_outputs(driver->lightPIDController,
+                light_diff, duty_cycle);
 
         disableMotors(driver);
 
@@ -782,6 +783,101 @@ void DRIVING_DRIVER_drive_light(DrivingDriver* driver, double distance_cm,
     driver->previousLightDifference = light_diff;
 
     disableMotors(driver);
+
+}
+
+/**
+ * void DRIVING_DRIVER_drive_continuos_to_obstacle(DrivingDriver* driver, double distance_cm, double obstacle_distance_cm)
+ *
+ * @details Drive motors given distance using positional control (motors will have
+ *       turned about the same amount at the end). Stops if obstacle detected
+ *
+ * @param driver                Driving driver to use with its actual state
+ * @param distance_cm           Distance in cm to drive the Bot
+ * @param obstacle_distance_cm  minimum distance to obstacle
+ * @return  1 if obstacle detected, driving canceled
+ *          0 if obstacle not detected
+ */
+int DRIVING_DRIVER_drive_to_obstacle(DrivingDriver* driver, double distance_cm,
+        double obstacle_distance_cm) {
+    int N = 1;
+    int sum = 0;
+    int distance_val = 0;
+    int distance_val_avg = 0;
+
+    DRIVING_DRIVER_set_direction_forward(driver);
+
+    int16_t dist_converted = (int16_t) (distance_cm
+            * driver->distanceCmCorrection); // TODO cm to sensed edges
+
+    int16_t pos_diff = MOTOR_POSITION_get_position_difference(
+            driver->motorPosition);
+    double duty_cycle[2];
+    if (driver->direction == driver->previousDirection) {
+        DISTANCE_PID_CONTROLLER_get_new_outputs(driver->distancePIDController,
+                driver->previousPositionDifference, duty_cycle);
+    } else {
+        DISTANCE_PID_CONTROLLER_get_new_outputs(driver->distancePIDController,
+                pos_diff, duty_cycle);
+    }
+
+    int16_t dist_traveled = MOTOR_POSITION_get_distance_traveled(
+            driver->motorPosition);
+
+    disableMotors(driver);
+
+    sum = 0;
+    // N distance values that are measured will be averaged into a final distance value
+    for (int j = 0; j < N; j++) {
+        distance_val = 100 * PmodToF_perform_distance_measurement(); // the distance value is in centimeters
+        sum = sum + distance_val;
+    }
+    distance_val_avg = sum / N;
+
+    PWM_DRIVER_set_duty_pct(driver->pwmRightMotor, duty_cycle[RIGHT_MOTOR]);
+    PWM_DRIVER_set_duty_pct(driver->pwmLeftMotor, duty_cycle[LEFT_MOTOR]);
+
+    enableMotors(driver);
+
+    while ((dist_traveled < dist_converted)
+            && (distance_val_avg > obstacle_distance_cm)) {
+        usleep(SAMPLE_PER);
+        pos_diff = MOTOR_POSITION_get_position_difference(
+                driver->motorPosition);
+
+        DISTANCE_PID_CONTROLLER_get_new_outputs(driver->distancePIDController,
+                pos_diff, duty_cycle);
+
+        disableMotors(driver);
+
+        PWM_DRIVER_set_duty_pct(driver->pwmRightMotor, duty_cycle[RIGHT_MOTOR]);
+        PWM_DRIVER_set_duty_pct(driver->pwmLeftMotor, duty_cycle[LEFT_MOTOR]);
+
+        enableMotors(driver);
+
+        sum = 0;
+        // N distance values that are measured will be averaged into a final distance value
+        for (int j = 0; j < N; j++) {
+            distance_val = 100 * PmodToF_perform_distance_measurement(); // the distance value is in centimeters
+            sum = sum + distance_val;
+        }
+        distance_val_avg = sum / N;
+
+        dist_traveled = MOTOR_POSITION_get_distance_traveled(
+                driver->motorPosition);
+
+    }
+
+    driver->previousPositionDifference = pos_diff;
+
+    disableMotors(driver);
+
+    if (distance_val_avg <= obstacle_distance_cm) {
+        DRIVING_DRIVER_delay_until_stop(driver);
+        return 1; // obstacle detected
+    } else {
+        return 0;
+    }
 
 }
 

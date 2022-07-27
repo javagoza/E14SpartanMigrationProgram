@@ -26,6 +26,7 @@
 #include "emubot_app.h"
 #include "line_follower_app.h"
 #include "emubot_find_path_app.h"
+#include "obstacle_avoidance_app.h"
 #include "xil_cache.h"
 
 typedef enum Tests {
@@ -36,10 +37,11 @@ typedef enum Tests {
     TEST_BOT,
     EMUBOT_APP,
     LINE_FOLLOWER,
-    EMUBOT_FIND_PATH
+    EMUBOT_FIND_PATH,
+    OBSTACLE_AVOIDANCE_APP
 } Tests;
 
-Tests testCase = EMUBOT_FIND_PATH;
+Tests testCase = OBSTACLE_AVOIDANCE_APP;
 
 void test_leds();
 void test_leds_and_buttons();
@@ -94,6 +96,10 @@ int main() {
         test_leds();
         emu_bot_find_path_application();
         break;
+    case OBSTACLE_AVOIDANCE_APP:
+        test_leds();
+        obstacle_avoidance_application();
+        break;
     default:
         break;
     }
@@ -105,7 +111,7 @@ int main() {
 
 void test_bot() {
     BotDrivers botDrivers;
-    xil_printf("BOT TEST Started\n\r");
+    xil_printf("BOT TEST Started\r\n");
 
     BOT_init(&botDrivers);
 
@@ -132,7 +138,7 @@ void test_bot() {
     }
     DRIVING_DRIVER_end(&botDrivers.drivingDriver);
     OLED_End(&botDrivers.oled);
-    xil_printf("BOT TEST Finished\n\r");
+    xil_printf("BOT TEST Finished\r\n");
     OLED_End(&botDrivers.oled);
 
 }
@@ -165,7 +171,7 @@ void test_leds() {
     XGpio GpioLedsAndRgbLeds; /* Dual GPIO Driver for LEDs and RGB LEDS*/
 
     unsigned long semiperiod = 60000;
-    xil_printf("LED TEST Started\n\r");
+    xil_printf("LED TEST Started\r\n");
 
     LEDS_DRIVER_init(&ledsDriver, &GpioLedsAndRgbLeds,
     BOT_LEDS_RGBLEDS_DEVICE_ID,
@@ -229,11 +235,11 @@ void test_leds() {
     RGB_LEDS_DRIVER_set_rgb_led2_set_color(&rgbLedsDriver, COLOR_BLACK);
     usleep(semiperiod);
 
-    xil_printf("LED TEST Finished\n\r");
+    xil_printf("LED TEST Finished\r\n");
 }
 
 void play_button_1_show(DrivingDriver* botDriver, PmodOLED* oled) {
-    xil_printf("BTN0 pressed\n\r");
+    xil_printf("BTN0 pressed\r\n");
     sleep(1);
     oled_show_action(oled, " FORWARD 10 cm");
     DRIVING_DRIVER_drive_forward_cm(botDriver, 10);
@@ -256,7 +262,7 @@ void play_button_1_show(DrivingDriver* botDriver, PmodOLED* oled) {
 }
 
 void play_button_2_show(DrivingDriver* botDriver, PmodOLED* oled) {
-    xil_printf("BTN1 pressed\n\r");
+    xil_printf("BTN1 pressed\r\n");
     sleep(1);
     DRIVING_DRIVER_set_speed(botDriver, .5);
     oled_show_action(oled, "TURN LEFT 360       SPEED 50");
@@ -269,7 +275,7 @@ void play_button_2_show(DrivingDriver* botDriver, PmodOLED* oled) {
 }
 
 void play_button_3_show(DrivingDriver* botDriver, PmodOLED* oled) {
-    xil_printf("BTN2 pressed\n\r");
+    xil_printf("BTN2 pressed\r\n");
     sleep(1);
     oled_show_action(oled, "  SWING LEFT 90");
     DRIVING_DRIVER_swing_turn_left_degrees(botDriver, 90);
@@ -323,7 +329,7 @@ void test_leds_and_buttons() {
     BOT_BUTTONS_SWITCHES_DEVICE_ID, BOT_SWITCHES_CHANNEL);
 
     unsigned long semiperiod = 250000;
-    xil_printf("LED TEST Started\n\r");
+    xil_printf("LED TEST Started\r\n");
 
     LEDS_DRIVER_set_led1_toggle(&ledsDriver);
     usleep(semiperiod);
@@ -387,7 +393,7 @@ void test_leds_and_buttons() {
                         | SWITCHES_DRIVER_poll(&switchesDriver));
     }
 
-    xil_printf("LED TEST Finished\n\r");
+    xil_printf("LED TEST Finished\r\n");
 }
 
 void oled_display_motor_position(PmodOLED* myOled, int speeds[2],
@@ -415,10 +421,10 @@ void test_motor_position_oled() {
     PmodOLED myOled;
     MotorPosition motorPosition;
 
-    xil_printf("OLED Init Started\n\r");
+    xil_printf("OLED Init Started\r\n");
     OLED_Begin(&myOled, BOT_OLED_GPIO_BASEADDR, BOT_OLED_SPI_BASEADDR,
     BOT_OLED_ORIENTATION, BOT_OLED_INVERT);
-    xil_printf("OLED Init Done\n\r");
+    xil_printf("OLED Init Done\r\n");
 
     MOTOR_POSITION_init(&motorPosition, BOT_MOTORPOSITION_BASEADDR,
     BOT_CORE_CLOCK_FREQ_HZ, BOT_MOTORPOSITION_EDGES_PER_REVOLUTION,
@@ -451,7 +457,7 @@ void test_motor_pwm_hbridge() {
     XGpio GpioHbridge;
     XGpio GpioLeds; /* Dual GPIO Driver for LEDs and RGB LEDS*/
 
-    xil_printf("PWM TEST Started\n\r");
+    xil_printf("PWM TEST Started\r\n");
 
     LEDS_DRIVER_init(&ledsDriver, &GpioLeds, BOT_LEDS_RGBLEDS_DEVICE_ID,
     BOT_LED_CHANNEL, 0b0000);
@@ -487,7 +493,7 @@ void test_motor_pwm_hbridge() {
 
     PWM_DRIVER_disable(&pwmDriverRightMotor);
     PWM_DRIVER_disable(&pwmDriverLeftMotor);
-    xil_printf("PWM TEST finished\n\r");
+    xil_printf("PWM TEST finished\r\n");
 
 }
 

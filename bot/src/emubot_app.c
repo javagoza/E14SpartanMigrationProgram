@@ -75,7 +75,7 @@ uint8_t userFont[cbOledFontUser] = {
 void emu_bot_application() {
     int actions_number = 0;
     BotDrivers botDrivers;
-    xil_printf("EMU BOT application Started\n\r");
+    xil_printf("EMU BOT application Started\r\n");
 
     BOT_init(&botDrivers);
 
