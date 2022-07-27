@@ -10,3 +10,4 @@ Project repository for my entry in the Element14 community's "7 Ways to Leave Yo
 7.  [Arty S7 50 ArtyBot - Bot Application Framework](https://community.element14.com/technologies/fpga-group/b/blog/posts/arty-s7-50-artybot-bot-application-framework)
 8.  [Arty S7 50 ArtyBot becomes Emubot, an educational robot for young children](https://community.element14.com/technologies/fpga-group/b/blog/posts/arty-s7-50-artybot-becomes-emubot-an-educational-robot-for-young-children)
 9.  [Arty S7 50 ArtyBot - Color sensing and line follower](https://community.element14.com/technologies/fpga-group/b/blog/posts/arty-s7-50-artybot--color-sensing-and-line-follower)
+10. [Arty S7 50 The Spartan-6 Migration Path Game. Learning the Differences Between Spartan-6 and Spartan-7 FPGAs](https://community.element14.com/technologies/fpga-group/b/blog/posts/arty-s7-50-the-spartan-6-migration-path-game-learning-the-differences-between-spartan-6-and-spartan-7-fpgas)
