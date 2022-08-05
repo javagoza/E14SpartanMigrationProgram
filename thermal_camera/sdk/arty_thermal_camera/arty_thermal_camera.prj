@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="arty_thermal_camera" location="C:/Xilinx/work/artys7/arty_thermal_camera_5/sdk/arty_thermal_camera" platform="C:/Xilinx/work/artys7/arty_thermal_camera_5/sdk/thermal_camera_bd_wrapper_v2/export/thermal_camera_bd_wrapper_v2/thermal_camera_bd_wrapper_v2.xpfm" platformUID="xilinx:arty-s7-50::0.0(custom)" systemProject="arty_thermal_camera_system" sysConfig="thermal_camera_bd_wrapper_v2" runtime="C/C++" cpu="standalone_microblaze_0" cpuInstance="microblaze_0" os="standalone" mssSignature="14b4c5f73536330c8cecd646bdc562b5">
+  <configuration name="Debug" id="xilinx.gnu.mb.exe.debug.1115941009">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.mb.exe.release.581108218" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="memory_tests"/>
+</sdkproject:SdkProject>
